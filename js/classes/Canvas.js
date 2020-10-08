@@ -1,7 +1,8 @@
+import { scale, maxStep, playerXSpeed, wobbleSpeed, arrowCodes } from '../globalV/gameSetting.js';
+
 export default class CanvasDisplay {
     constructor(level, canvas, ctx) {
-        this.canvas.width = canvas.width;
-        this.canvas.height = canvas.height;
+        this.canvas= canvas;
         this.ctx = ctx
         this.level = level;
         this.drawFrame();
@@ -53,7 +54,7 @@ export default class CanvasDisplay {
         let margin = width / 3;
 
         let player = this.level.player;
-        let center = player.pos.plus(player.size.times(0.5)).times(scale);
+        let center = player.pos.add(player.size.mag(0.5)).mag(scale);
 
         this.ctx.translate(-center.x - margin + width, -center.y - margin + height);
     }

@@ -1,19 +1,24 @@
 import Vector from './Vector.js';
+import Player from './Player.js';
+import Goal from './Goal.js';
+import Enemy from './Enemy.js';
+import { scale, maxStep, playerXSpeed, wobbleSpeed, arrowCodes } from '../globalV/gameSetting.js';
 
 export default class Level {
     constructor(plan) {
         this.width = plan[0].length;
         console.log(plan[0].length)
+        console.log(plan);
         this.height = plan.length;
         this.grid = [];
         this.actors = [];
 
         const actorChars = {
             '@': Player,
-            'o': Coin,
-            '=': Lava,
-            '|': Lava,
-            'v': Lava
+            'o': Goal,
+            '=': Enemy,
+            '|': Enemy,
+            'v': Enemy
         };
 
         for (let y = 0; y < this.height; y++) {

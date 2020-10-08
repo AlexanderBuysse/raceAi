@@ -1,3 +1,4 @@
+import { scale, maxStep, playerXSpeed, wobbleSpeed, arrowCodes} from './globalV/gameSetting.js';
 import Vector from './classes/Vector.js';
 import Particle from './classes/Particle.js';
 import CanvasDisplay from './classes/Canvas.js';
@@ -12,13 +13,27 @@ const $canvas = document.querySelector(`.canvas`),
   ctx = $canvas.getContext(`2d`),
   mouse = new Vector(0, 0);
 
-const scale = 20;
-const maxStep = 0.05;
-const wobbleSpeed = 8, wobbleDist = 0.07;
-const playerXSpeed = 7;
-const arrowCodes = { 37: `left`, 38: `up`, 39: `right` };
-let arrows;
-const level=[];
+  let arrows;
+
+const level=[[`        =xxxxxxxxxxxxxxx xx          `,
+              `                                     `,
+              `                                     `,
+              `                                     `,
+              `                                     `,
+              `                                     `,
+              `                                     `,
+              `                                     `,
+              `                                     `,
+              `                                     `,
+              `                                     `,
+              `                                     `,
+              `                                     `,
+              `                                     `,
+              `                                     `,
+              `                                     `,
+              `               @@   @                `,
+              `    x xxxxxxxxxxxxxxxxxx             `,
+              `xxxxxxxxxxxxxxxxxxxxxxxxxxxxx        `]];
 
 const init = () => {
   arrows = trackKeys(arrowCodes);
@@ -40,8 +55,8 @@ const trackKeys = codes => {
       event.preventDefault();
     }
   };
-  addEventListener(`keydown`, handler);
-  addEventListener(`keyup`, handler);
+  $canvas.addEventListener(`keydown`, handler);
+  $canvas.addEventListener(`keyup`, handler);
   return pressed;
 };
 
@@ -62,7 +77,7 @@ const runAnimation = frameFunc => {
 };
 
 const runLevel = (level, Display, andThen) => {
-  let display = new Display(document.body, level);
+  let display = new Display(level, $canvas, ctx);
   runAnimation(function (step) {
     level.animate(step, arrows);
     display.drawFrame(step);
