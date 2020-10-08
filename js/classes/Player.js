@@ -1,5 +1,5 @@
 import Vector from './Vector.js';
-import { scale, maxStep, playerXSpeed, wobbleSpeed, arrowCodes } from '../globalV/gameSetting.js';
+import { scale, maxStep, playerXSpeed, wobbleSpeed, arrowCodes, jumpSpeed} from '../globalV/gameSetting.js';
 
 export default class Player {
     constructor(pos) {
@@ -18,14 +18,15 @@ export default class Player {
         let motion = new Vector(this.speed.x * step, 0);
         let newPos = this.pos.add(motion);
         let obstacle = level.obstacleAt(newPos, this.size);
-        console.log(obstacle);
         if (obstacle)
             level.playerTouched(obstacle);
         else
             this.pos = newPos;
     }
     moveY(step, level, keys) {
-        this.speed.y += step;
+        this.speed.y =0
+        if (keys.up) this.speed.y -= playerXSpeed;
+        if (keys.down) this.speed.y += playerXSpeed;
         let motion = new Vector(0, this.speed.y * step);
         let newPos = this.pos.add(motion);
         let obstacle = level.obstacleAt(newPos, this.size);

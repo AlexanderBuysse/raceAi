@@ -31,7 +31,7 @@ const level=[[`        =xxxxxxxxxxxxxxx xx          `,
               `                                     `,
               `                                     `,
               `                                     `,
-              `               @@   @                `,
+              `               @     @               `,
               `    x xxxxxxxxxxxxxxxxxx             `,
               `xxxxxxxxxxxxxxxxxxxxxxxxxxxxx        `]];
 
@@ -55,8 +55,9 @@ const trackKeys = codes => {
       event.preventDefault();
     }
   };
-  $canvas.addEventListener(`keydown`, handler);
-  $canvas.addEventListener(`keyup`, handler);
+  addEventListener(`keydown`, handler);
+  addEventListener(`keyup`, handler);
+  console.log(pressed)
   return pressed;
 };
 
