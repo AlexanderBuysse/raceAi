@@ -1,10 +1,11 @@
-import { scale, maxStep, playerXSpeed, wobbleSpeed, arrowCodes } from '../globalV/gameSetting.js';
+import {scale} from '../globalV/gameSetting.js';
 
 export default class CanvasDisplay {
     constructor(level, canvas, ctx) {
         this.canvas= canvas;
         this.ctx = ctx
         this.level = level;
+        console.log(level)
         this.drawFrame();
     }
     drawBackground() {
@@ -51,14 +52,19 @@ export default class CanvasDisplay {
     scrollPlayerIntoView() {
         let width = this.canvas.width;
         let height = this.canvas.height;
-        let margin = width / 3;
+        let margin = width/3;
 
-        let player = this.level.player;
-        let center = player.pos.add(player.size.mag(0.5)).mag(scale);
-
+        console.log(width, height, margin)
+        //console.log(this.level)
+        let player = this.level.player[0];
+        console.log(this.canvas.width);
+        let center = player.pos.plus(player.size.times(0.5)).times(scale);
+        console.log(center);
+        
         this.ctx.translate(-center.x - margin + width, -center.y - margin + height);
     }
     clear() {
-        this.canvas.parentNode.removeChild(this.canvas);
+        console.log(this.canvas);
+        //this.canvas.parentElement.removeChild(this.canvas);
     }
 }

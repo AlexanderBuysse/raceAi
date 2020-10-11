@@ -17,7 +17,7 @@ export default class Enemy {
         return `lava`;
     }
     act(step, level) {
-        let newPos = this.pos.add(this.speed.mag(step));
+        let newPos = this.pos.plus(this.speed.times(step));
         if (!level.obstacleAt(newPos, this.size))
             this.pos = newPos;
         else if (this.repeatPos)

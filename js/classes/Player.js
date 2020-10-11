@@ -1,10 +1,10 @@
 import Vector from './Vector.js';
-import { scale, maxStep, playerXSpeed, wobbleSpeed, arrowCodes, jumpSpeed} from '../globalV/gameSetting.js';
+import {playerSpeed} from '../globalV/gameSetting.js';
 
 export default class Player {
     constructor(pos) {
-        this.pos = pos.add(new Vector(0, -0.5));
-        this.size = new Vector(0.5, 0.9);
+        this.pos = pos.plus(new Vector(0, -0.5));
+        this.size = new Vector(0.8, 1.5);
         this.speed = new Vector(0, 0);
     }
     get type() {
@@ -12,12 +12,13 @@ export default class Player {
     }
     moveX(step, level, keys) {
         this.speed.x = 0;
-        if (keys.left) this.speed.x -= playerXSpeed;
-        if (keys.right) this.speed.x += playerXSpeed;
+        if (keys.left) this.speed.x -= playerSpeed;
+        if (keys.right) this.speed.x += playerSpeed;
 
         let motion = new Vector(this.speed.x * step, 0);
-        let newPos = this.pos.add(motion);
+        let newPos = this.pos.plus(motion);
         let obstacle = level.obstacleAt(newPos, this.size);
+        //console.log(obstacle);
         if (obstacle)
             level.playerTouched(obstacle);
         else
@@ -25,20 +26,16 @@ export default class Player {
     }
     moveY(step, level, keys) {
         this.speed.y =0
-        if (keys.up) this.speed.y -= playerXSpeed;
-        if (keys.down) this.speed.y += playerXSpeed;
+        if (keys.up) this.speed.y -= playerSpeed;
+        if (keys.down) this.speed.y += playerSpeed;
+        
         let motion = new Vector(0, this.speed.y * step);
-        let newPos = this.pos.add(motion);
+        let newPos = this.pos.plus(motion);
         let obstacle = level.obstacleAt(newPos, this.size);
-        if (obstacle) {
+        if (obstacle)
             level.playerTouched(obstacle);
-            if (keys.up && this.speed.y > 0)
-                this.speed.y = -jumpSpeed;
-            else
-                this.speed.y = 0;
-        } else {
+        else
             this.pos = newPos;
-        }
     }
     act(step, level, keys) {
         this.moveX(step, level, keys);

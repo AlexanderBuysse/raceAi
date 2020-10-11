@@ -48,6 +48,15 @@ export default class Vector {
   clone() {
     return new Vector(this.x, this.y);
   }
+
+  times(f) {
+    return new Vector(this.x * f, this.y * f);
+  }
+
+  plus(other) {
+    return new Vector(this.x + other.x, this.y + other.y);
+  }
+  
   static add(v1, v2) {
     return v1.clone().add(v2);
   }

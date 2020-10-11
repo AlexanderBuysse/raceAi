@@ -1,4 +1,4 @@
-import { scale, maxStep, playerXSpeed, wobbleSpeed, arrowCodes} from './globalV/gameSetting.js';
+import { arrowCodes} from './globalV/gameSetting.js';
 import Vector from './classes/Vector.js';
 import Particle from './classes/Particle.js';
 import CanvasDisplay from './classes/Canvas.js';
@@ -15,25 +15,30 @@ const $canvas = document.querySelector(`.canvas`),
 
   let arrows;
 
-const level=[[`        =xxxxxxxxxxxxxxx xx          `,
-              `                                     `,
-              `                                     `,
-              `                                     `,
-              `                                     `,
-              `                                     `,
-              `                                     `,
-              `                                     `,
-              `                                     `,
-              `                                     `,
-              `                                     `,
-              `                                     `,
-              `                                     `,
-              `                                     `,
-              `                                     `,
-              `                                     `,
-              `               @     @               `,
-              `    x xxxxxxxxxxxxxxxxxx             `,
-              `xxxxxxxxxxxxxxxxxxxxxxxxxxxxx        `]];
+const level = [[`                                                                                `,
+  `                       v                   v                                    `,
+  `                                                                                `,
+  `          xxxx                         xxxx                                     `,
+  `                             xxxx                                               `,
+  `                                                                                `,
+  `                   xxxx                                           xxx           `,
+  `                                                   xx      xx    xx!xx          `,
+  `                                    o o      xx                  x!!!x          `,
+  `            xxxx                                                 xx!xx          `,
+  `                                   xxxxx                          xvx           `,
+  `                                                                            xx  `,
+  `  x                     o            xxxxxxxx                                x  `,
+  `  x                                      xxxxx                             o x  `,
+  `  x          xxxx       o                                                    x  `,
+  `  x  @       x  x                                                xxxxx       x  `,
+  `  xxxxxxxxxxxx  xxxxxxxxxxxxxxx   xxxxxxxxxxxxxxxxxxxx     xxxxxxx   xxxxxxxxx  `,
+  `                              x   x                  x     x                    `,
+  `                              x!!!x                  x!!!!!x                    `,
+  `                              x!!!x                  x!!!!!x                    `,
+  `                              xxxxx                  xxxxxxx                    `,
+  `                                                                                `,
+  `                                                                                `
+            ]];
 
 const init = () => {
   arrows = trackKeys(arrowCodes);
@@ -57,7 +62,6 @@ const trackKeys = codes => {
   };
   addEventListener(`keydown`, handler);
   addEventListener(`keyup`, handler);
-  console.log(pressed)
   return pressed;
 };
 
