@@ -13,7 +13,7 @@ export default class CanvasDisplay {
             row.forEach((type, x) => {
                 switch (type) {
                     case 'enemy':
-                        this.ctx.fillStyle = 'rgb(255, 100, 100)';
+                        this.ctx.fillStyle = 'rgb(241, 229, 89)';
                         this.ctx.fillRect(x * scale, y * scale, scale, scale);
                         break;
                     case 'wall':
@@ -65,6 +65,10 @@ export default class CanvasDisplay {
     }
     clear() {
         console.log(this.canvas);
-        //this.canvas.parentElement.removeChild(this.canvas);
+        console.log(this.canvas.parentElement);
+        const $title= document.querySelector(`.title`);
+        const $buttonretry = document.querySelector(`.retry`);
+        $buttonretry.textContent=`next`;
+        $title.textContent=`wasted`;
     }
 }

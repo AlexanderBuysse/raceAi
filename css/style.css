@@ -11,5 +11,29 @@ html {
 
 body {
   font-size: 2rem;
-  font-family: Georgia;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100rem;
+
+}
+
+.dead-menu{
+  font-size: 30rem;
+  z-index: 1;
+  top: 25%; 
+  left: 25%; 
+  position: absolute;
+}
+
+.title{
+  color: red;
+}
+
+div{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }

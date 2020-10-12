@@ -18,7 +18,7 @@ const $canvas = document.querySelector(`.canvas`),
 const level = [[
   `                                 xxxxxxxxxx                                  `,
   `      xxxxxxxxxxxxxxxxxxxxxxxxxxxx   o    xxxxxxxxxxxxxxxxxxxxxxxxxx         `,
-  `      x   v                      x        x                     v  x         `,
+  `      x   v                      x        x                  v  v  x         `,
   `      x                                                            x         `,
   `      x                                                            x         `,
   `      x      xxxxxxxxxxxxxxx                       xxxxxxxxxx      x         `,
@@ -32,11 +32,11 @@ const level = [[
   `      x      x   xxxxxxxxxxx      x       xxxxxxxxxxxx      x             x  `,
   `      x      x   x                x                  x      x             x  `,
   `      x      x   x                x                  x      x             x  `,
-  `      x      x   x                x                  x      x      x      x  `,
+  `      x      x|||x                x                  x      x      x      x  `,
   `  xxxxx      xxxxx         xxxxxxxx       xxxxxxx    x             x      x  `,
   `  x                               x       x     x    x             x      x  `,
   `  x                               x       x          x             x      x  `,
-  `  x                               x   @   x          x             x!!!!!!x  `,
+  `  x                               x   @   x          x         |  |x||||||x  `,
   `  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  `,
   `                                                                             `,
   `                                                                             `,
@@ -49,6 +49,7 @@ const level = [[
 const init = () => {
   arrows = trackKeys(arrowCodes);
   runGame(level, CanvasDisplay);
+
 };
 
 const elt = (name, className) => {
@@ -105,15 +106,19 @@ const runLevel = (level, Display, andThen) => {
 const runGame = (plans, Display) => {
   const startLevel = n => {
     runLevel(new Level(plans[n]), Display, status => {
-      if (status == `lost`) {
-        startLevel(n);
-      } else if (n < plans.length - 1) {
+      if (n < plans.length - 1) {
         startLevel(n + 1);
       } else {
         console.log(`You win!`);
       }
     });
   };
+  const $buttonretry = document.querySelector(`.retry`)
+  const buttonRetryHandler = e => {
+    e.preventDefault
+    startLevel(plans[n]);
+  }
+  $buttonretry.addEventListener(`click`, buttonRetryHandler)
   startLevel(0);
 };
 
