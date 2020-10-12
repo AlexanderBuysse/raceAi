@@ -58,10 +58,10 @@ export default class CanvasDisplay {
         //console.log(this.level)
         let player = this.level.player[0];
         console.log(this.canvas.width);
-        let center = player.pos.plus(player.size.times(0.5)).times(scale);
+        let center = player.pos.plus(player.size.times(1)).times(scale);
         console.log(center);
         
-        this.ctx.translate(-center.x - margin + width, -center.y - margin + height);
+        this.ctx.translate(-center.x - margin + width-200, -center.y - margin + height);
     }
     clear() {
         console.log(this.canvas);

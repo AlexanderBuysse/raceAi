@@ -14,11 +14,10 @@ export default class Player {
         this.speed.x = 0;
         if (keys.left) this.speed.x -= playerSpeed;
         if (keys.right) this.speed.x += playerSpeed;
-
+        
         let motion = new Vector(this.speed.x * step, 0);
         let newPos = this.pos.plus(motion);
         let obstacle = level.obstacleAt(newPos, this.size);
-        //console.log(obstacle);
         if (obstacle)
             level.playerTouched(obstacle);
         else
