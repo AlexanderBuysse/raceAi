@@ -2,7 +2,7 @@ import Vector from './Vector.js';
 import Player from './Player.js';
 import Goal from './Goal.js';
 import Enemy from './Enemy.js';
-import {maxStep} from '../globalV/gameSetting.js';
+import { maxStep } from '../globalV/gameSetting.js';
 
 export default class Level {
     constructor(plan) {
@@ -10,6 +10,7 @@ export default class Level {
         this.height = plan.length;
         this.grid = [];
         this.actors = [];
+
 
         const actorChars = {
             '@': Player,
@@ -23,7 +24,7 @@ export default class Level {
             for (let x = 0; x < this.width; x++) {
                 let ch = line[x], fieldType = null;
                 let Actor = actorChars[ch];
-                if (Actor){
+                if (Actor) {
                     this.actors.push(new Actor(new Vector(x, y), ch));
                 }
                 else if (ch == `x`)
@@ -34,6 +35,9 @@ export default class Level {
             }
             this.grid.push(gridLine);
         }
+
+        console.log(this.actors);
+        console.log(this.grid);
         this.player = this.actors.filter(actor => actor.type == `player`);
         this.status = this.finishDelay = null;
     }

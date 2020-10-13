@@ -1,6 +1,6 @@
 import Vector from '../Vector.js';
 
-class Brain {
+export default class Brain {
   constructor(size){
     this.directions = [];
     this.step =0;
@@ -18,7 +18,7 @@ class Brain {
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------
   //returns a random PVector
   getRandomDirection() {
-    let randomNumber = floor(random(9));
+    let randomNumber = Math.floor(Math.random() * 10); 
     switch(randomNumber) {
     case 0:
       return new Vector(0, 1);

@@ -1,3 +1,4 @@
+import Vector from '../Vector.js';
 
 
 export default class Population{
@@ -13,7 +14,7 @@ export default class Population{
         this.solutionFound = false;
 
         for (let i = 0; i < size; i++) {
-            this.players[i] = new Player();
+            this.players[i] = new Player(new Vector(38, 19));
         }
     }
 
@@ -42,7 +43,6 @@ export default class Population{
                 return false;
             }
         }
-        print(`great job`);
         return true;
     }
 

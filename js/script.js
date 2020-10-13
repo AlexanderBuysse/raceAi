@@ -1,6 +1,5 @@
-import { arrowCodes} from './globalV/gameSetting.js';
+import {arrowCodes, level} from './globalV/gameSetting.js';
 import Vector from './classes/Vector.js';
-import Particle from './classes/Particle.js';
 import CanvasDisplay from './classes/Canvas.js';
 import Enemy from './classes/Enemy.js';
 import Goal from './classes/Goal.js';
@@ -13,49 +12,12 @@ const $canvas = document.querySelector(`.canvas`),
   ctx = $canvas.getContext(`2d`),
   mouse = new Vector(0, 0);
 
-  let arrows;
-
-const level = [[
-  `                                 xxxxxxxxxx                                  `,
-  `      xxxxxxxxxxxxxxxxxxxxxxxxxxxx   o    xxxxxxxxxxxxxxxxxxxxxxxxxx         `,
-  `      x   v                      x        x                  v  v  x         `,
-  `      x                                                            x         `,
-  `      x                                                            x         `,
-  `      x      xxxxxxxxxxxxxxx                       xxxxxxxxxx      x         `,
-  `      x                    xxxxxxxxxxxxxxxxxxxxxxxxx               x         `,
-  `      x                    x                       x               xxxxxxxx  `,
-  `      xxxxxxxxxxxxxxx      x                       x               x!!!!!!x  `,
-  `      x                    x                       xxxxxxxxxx      x      x  `,
-  `      x                    x      x       x                 x      x      x  `,
-  `      x      x             x      x       x                 x      x      x  `,
-  `      x      x             x      x       x                 x      x      x  `,
-  `      x      x   xxxxxxxxxxx      x       xxxxxxxxxxxx      x             x  `,
-  `      x      x   x                x                  x      x             x  `,
-  `      x      x   x                x                  x      x             x  `,
-  `      x      x|||x                x                  x      x      x      x  `,
-  `  xxxxx      xxxxx         xxxxxxxx       xxxxxxx    x             x      x  `,
-  `  x                               x       x     x    x             x      x  `,
-  `  x                               x   @   x          x             x      x  `,
-  `  x                               x       x          x         |  |x||||||x  `,
-  `  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  `,
-  `                                                                             `,
-  `                                                                             `,
-  `                                                                             `,
-  `                                                                             `,
-  `                                                                             `,
-  `                                                                                `
-  ]];
+let arrows;
 
 const init = () => {
   arrows = trackKeys(arrowCodes);
   runGame(level, CanvasDisplay);
 
-};
-
-const elt = (name, className) => {
-  let elt = document.createElement(name);
-  if (className) elt.className = className;
-  return elt;
 };
 
 const trackKeys = codes => {
@@ -121,7 +83,6 @@ const runGame = (plans, Display) => {
         const $buttonretry = document.querySelector(`.retry`);
         $buttonretry.textContent = ``;
         $title.textContent=`You win`;
-        console.log(`You win!`);
       }
     });
   };
