@@ -35,8 +35,8 @@ const level = [[
   `      x      x|||x                x                  x      x      x      x  `,
   `  xxxxx      xxxxx         xxxxxxxx       xxxxxxx    x             x      x  `,
   `  x                               x       x     x    x             x      x  `,
-  `  x                               x       x          x             x      x  `,
-  `  x                               x   @   x          x         |  |x||||||x  `,
+  `  x                               x   @   x          x             x      x  `,
+  `  x                               x       x          x         |  |x||||||x  `,
   `  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  `,
   `                                                                             `,
   `                                                                             `,
@@ -91,6 +91,7 @@ const runAnimation = frameFunc => {
 const runLevel = (level, Display, andThen) => {
   let display = new Display(level, $canvas, ctx);
   runAnimation(function (step) {
+    //console.log(step);
     level.animate(step, arrows);
     display.drawFrame(step);
     if (level.isFinished()) {
@@ -106,19 +107,25 @@ const runLevel = (level, Display, andThen) => {
 const runGame = (plans, Display) => {
   const startLevel = n => {
     runLevel(new Level(plans[n]), Display, status => {
-      if (n < plans.length - 1) {
+      if (status == `lost`) {
+        const $buttonretry = document.querySelector(`.retry`)
+        const buttonRetryHandler = e => {
+          e.preventDefault
+          startLevel(plans[n])
+        }
+        $buttonretry.addEventListener(`click`, buttonRetryHandler)
+      } else if (n < plans.length - 1) {
         startLevel(n + 1);
       } else {
+        const $title = document.querySelector(`.title`);
+        const $buttonretry = document.querySelector(`.retry`);
+        $buttonretry.textContent = ``;
+        $title.textContent=`You win`;
         console.log(`You win!`);
       }
     });
   };
-  const $buttonretry = document.querySelector(`.retry`)
-  const buttonRetryHandler = e => {
-    e.preventDefault
-    startLevel(plans[n]);
-  }
-  $buttonretry.addEventListener(`click`, buttonRetryHandler)
+
   startLevel(0);
 };
 

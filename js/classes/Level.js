@@ -7,8 +7,6 @@ import {maxStep} from '../globalV/gameSetting.js';
 export default class Level {
     constructor(plan) {
         this.width = plan[0].length;
-        console.log(plan[0].length)
-        console.log(plan);
         this.height = plan.length;
         this.grid = [];
         this.actors = [];
@@ -26,9 +24,7 @@ export default class Level {
                 let ch = line[x], fieldType = null;
                 let Actor = actorChars[ch];
                 if (Actor){
-                    console.log(x, y);
                     this.actors.push(new Actor(new Vector(x, y), ch));
-                    
                 }
                 else if (ch == `x`)
                     fieldType = `wall`;
@@ -39,7 +35,6 @@ export default class Level {
             this.grid.push(gridLine);
         }
         this.player = this.actors.filter(actor => actor.type == `player`);
-        console.log(this.player)
         this.status = this.finishDelay = null;
     }
 
