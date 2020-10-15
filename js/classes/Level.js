@@ -91,8 +91,7 @@ export default class Level {
 
     playerTouched(type, actor) {
         if (type == `lava` && this.status == null) {
-            this.status = `lost`;
-            this.finishDelay = 0.5;
+            return `dead`;
         } else if (type == `coin`) {
             this.actors = this.actors.filter(function (other) {
                 return other != actor;
@@ -100,8 +99,7 @@ export default class Level {
             if (!this.actors.some(function (actor) {
                 return actor.type == `coin`;
             })) {
-                this.status = `won`;
-                this.finishDelay = 1;
+                return `reachedGoal`;
             }
         }
     }

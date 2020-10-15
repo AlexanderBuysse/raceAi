@@ -70,12 +70,41 @@ const runGame = (plans, Display) => {
   const startLevel = n => {
     runLevel(new Level(plans[n]), Display, status => {
       if (status == `lost`) {
-        const $buttonretry = document.querySelector(`.retry`)
+        /*const $buttonretry = document.querySelector(`.retry`)
         const buttonRetryHandler = e => {
           e.preventDefault
           startLevel(plans[n])
         }
-        $buttonretry.addEventListener(`click`, buttonRetryHandler)
+        $buttonretry.addEventListener(`click`, buttonRetryHandler)*/
+        if (testPopulation.allPlayersDead()) {
+          //genetic algorithm
+          testPopulation.calculateFitness();
+          testPopulation.naturalSelection();
+          testPopulation.mutateDemBabies();
+          //reset dots
+          startLevel(0);
+
+          if (testPopulation.gen % increaseEvery == 0) {
+            testPopulation.increaseMoves();
+          }
+
+        } else {
+
+          // moveAndShowDots();
+          //update and show population
+
+          for (var j = 0; j < evolutionSpeed; j++) {
+            for (var i = 0; i < dots.length; i++) {
+              dots[i].move();
+            }
+            testPopulation.update();
+          }
+
+          for (var i = 0; i < dots.length; i++) {
+            dots[i].show();
+          }
+          testPopulation.show();
+        }
       } else if (n < plans.length - 1) {
         startLevel(n + 1);
       } else {

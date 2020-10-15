@@ -70,7 +70,7 @@ export default class Player {
                 if (this.brain.directions.length > this.brain.step) {//if there are still directions left then set the velocity as the next PVector in the direcitons array
                     this.vel = this.brain.directions[this.brain.step];
                     this.brain.step++;
-                } else {//if at the end of the directions array then the player is dead
+                } else {//if at the end of 
                     this.dead = true;
                 }
                 this.moveCount = 6;
@@ -92,19 +92,20 @@ export default class Player {
             let newPosX = this.pos.plus(motionX);
             let newPosY = this.pos.plus(motionY);
 
-            console.log(newPosY);
             let obstacleX = level.obstacleAt(newPosX, this.size);
             let obstacleY = level.obstacleAt(newPosY, this.size);
             let obstacleXY = level.obstacleAt(newPos, this.size);
             const isObstacle = (obst, y, x) => {
                 if (obst) {
                     if (y) {
-                        level.playerTouched(obstacleY);
+                        const colisionY=level.playerTouched(obstacleY);
+                        this.checkColision(colisionY);
                     } else {
                         this.pos = newPosY;
                     }
                     if (x) {
-                        level.playerTouched(obstacleX);
+                        const colisionX=level.playerTouched(obstacleX);
+                        this.checkColision(colisionX);
                     } else {
                         this.pos = newPosX;
                     }
@@ -155,20 +156,13 @@ export default class Player {
         }
     }
 
-    checkCollisions() {
-        for (let i = 0; i < dots.length; i++) {
-            if (dots[i].collides(this.pos, new Vector(this.pos.x + this.size, this.pos.y + this.size))) {
-                this.fading = true;
-                this.dead = true;
-                this.deathByDot = true;
-                this.deathAtStep = this.brain.step;
-            }
-        }
-        if (winArea.collision(this.pos, new Vector(this.pos.x + this.size, this.pos.y + this.size))) {
-            this.reachedGoal = true;
-        }
-        for (let i = 0; i < this.nodes.length; i++) {
-            this.nodes[i].collision(this.pos, new Vector(this.pos.x + this.size, this.pos.y + this.size));
+    checkColision(colision){
+        if(colision===`dead`){
+            this.dead=true;
+            this.deathByDot = true;
+            this.deathAtStep = this.brain.step;
+        }else if(colision===`reachedGoal`){
+            this.reachedGoal=true;
         }
     }
 
@@ -223,7 +217,6 @@ export default class Player {
                 level.playerTouched(otherActor.type, otherActor);
 
             if (level.status == `lost`) {
-
             }
         }
     }
