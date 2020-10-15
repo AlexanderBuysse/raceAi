@@ -4,10 +4,10 @@ import { dist } from '../../globalV/functions.js';
 
 
 export default class Node {
-  constructor(nodeTile) {
+  constructor(cords) {
     this.reached = false;
     this.distToFinish = 0.0;
-    this.pos = new Vector(nodeTile.x, nodeTile.y);
+    this.pos = new Vector(cords.x, cords.y);
     this.w = scale ;
     this.h = scale;
     this.bottomRight = new Vector(this.pos.x + this.w, this.pos.y + this.h);
@@ -18,7 +18,6 @@ export default class Node {
       return true;
     }else if(pbr.x < this.pos.x){
       this.reached = false;
-
     }
     return false;
   }

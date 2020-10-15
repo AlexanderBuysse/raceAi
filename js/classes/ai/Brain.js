@@ -7,8 +7,7 @@ export default class Brain {
     this.randomize(size);
 
   }
-  //--------------------------------------------------------------------------------------------------------------------------------
-  //sets all the vectors in directions to a random vector with length 1
+
   randomize(size) {
     for (let i = 0; i< size; i++) {
       this.directions[i] = this.getRandomDirection();
@@ -16,9 +15,9 @@ export default class Brain {
   }
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------
-  //returns a random PVector
-  getRandomDirection() {
-    let randomNumber = Math.floor(Math.random() * 10); 
+
+getRandomDirection() {
+    let randomNumber = Math.floor(Math.random() * 9); 
     switch(randomNumber) {
     case 0:
       return new Vector(0, 1);
