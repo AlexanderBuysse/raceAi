@@ -1,19 +1,19 @@
 import Vector from './Vector.js';
 import Player from './Player.js';
 import Goal from './Goal.js';
-import Enemy from './Enemy.js';
-import { maxStep } from '../globalV/gameSetting.js';
+import Enemy from './Enemy.js'; 
+import Population from './ai/Population.js';
+import { maxStep, populationSize,  humanPlaying} from '../globalV/gameSetting.js';
 
 export default class Level {
     constructor(plan) {
         this.width = plan[0].length;
         this.height = plan.length;
         this.grid = [];
-        this.actors = [];
-
+        this.actors = []
+        this.population;
 
         const actorChars = {
-            '@': Player,
             'o': Goal,
             '=': Enemy,
             '|': Enemy,
@@ -25,7 +25,9 @@ export default class Level {
                 let ch = line[x], fieldType = null;
                 let Actor = actorChars[ch];
                 if (Actor) {
-                    this.actors.push(new Actor(new Vector(x, y), ch));
+                    if(ch != `@`&& humanPlaying===false){
+                        this.actors.push(new Actor(new Vector(x, y), ch));
+                    }
                 }
                 else if (ch == `x`)
                     fieldType = `wall`;
@@ -35,10 +37,6 @@ export default class Level {
             }
             this.grid.push(gridLine);
         }
-
-        console.log(this.actors);
-        console.log(this.grid);
-        this.player = this.actors.filter(actor => actor.type == `player`);
         this.status = this.finishDelay = null;
     }
 
@@ -64,6 +62,14 @@ export default class Level {
         }
     }
 
+    allPLayers(){
+        return this.player;
+    }
+
+    newPlayer(newPlayers) {
+        this.player=newPlayers;
+    }
+
     actorAt(actor) {
         for (let i = 0; i < this.actors.length; i++) {
             let other = this.actors[i];
@@ -85,12 +91,17 @@ export default class Level {
             this.actors.forEach(actor => {
                 actor.act(thisStep, this, keys);
             });
+            this.player.forEach(actor => {
+                actor.act(thisStep, this, keys);
+
+            });
             step -= thisStep;
         }
     }
 
     playerTouched(type, actor) {
         if (type == `lava` && this.status == null) {
+            this.status=`lost`;
             return `dead`;
         } else if (type == `coin`) {
             this.actors = this.actors.filter(function (other) {
@@ -101,6 +112,61 @@ export default class Level {
             })) {
                 return `reachedGoal`;
             }
+        } else if(type == `outOfMoves`){
+            if (this.population.allPlayersDead()){
+                console.log(`reached`)
+                this.status = `lost`;
+            }
+        }
+    }
+
+    statusReset(){
+        this.status=null;
+    }
+
+    playerPopulation(plan){
+        this.player=[];
+        const actorChars = {
+            '@': Player
+        };
+        for (let y = 0; y < this.height; y++) {
+            let line = plan[y], gridLine = [];
+            for (let x = 0; x < this.width; x++) {
+                let ch = line[x], fieldType = null;
+                let Actor = actorChars[ch];
+                if (Actor) {
+                    if (ch == `@` && humanPlaying === false) {
+                        for (let i = 0; i < populationSize; i++) {
+                            this.player.push(new Actor(new Vector(x, y), ch));
+                        }
+                    }
+                }
+            }
+        }
+        if(this.population== null){
+            this.population = new Population(this.player);
+        }
+        //console.log(this.population)
+        //console.log(this.population.allPlayersDead())
+
+        if(this.population.allPlayersDead()){
+            this.population.calculateFitness();
+            this.population.naturalSelection();
+            this.population.mutateDemBabies();
+            console.log(this.population);
+            if (this.population.gen % 5== 0) {
+                this.population.increaseMoves();
+            }
+        }
+
+        
+    }
+
+    allPlayersInLevelDead(){
+        if (this.population.allPlayersDead()){
+            return true;
+        }else{
+            return false;
         }
     }
 }

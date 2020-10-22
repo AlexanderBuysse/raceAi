@@ -2,7 +2,7 @@ import Vector from './Vector.js';
 import {playerSpeed, numberOfSteps, level, humanPlaying} from '../globalV/gameSetting.js';
 import Brain from './ai/Brain.js';
 import Node from './ai/Node.js';
-
+import {dist} from '../globalV/functions.js';
 
 
 export default class Player {
@@ -32,33 +32,13 @@ export default class Player {
         this.grid = [];
         this.actors = [];
 
-
-        for (let y = 0; y < this.height; y++) {
-            let line = level[0][y], gridLine = [];
-            for (let x = 0; x < this.width; x++) {
-                let ch = line[x], fieldType = null;
-                if (ch == `@`)
-                    fieldType = `player`;
-                else if(ch == `o`)
-                fieldType = `goal`;
-                else if (ch == `x`)
-                    fieldType = `wall`;
-                else if (ch == `!`)
-                    fieldType = `lava`;
-                gridLine.push(fieldType);
-            }
-            this.grid.push(gridLine);
-        }
-
-        this.player = this.actors.filter(actor => actor.type == `player`);
-        this.status = this.finishDelay = null;
     }
     get type() {
         return `player`;
     }
 
     setNodes() {
-        console.log(this.pos);
+        //console.log(this.pos);
         this.nodes[0] = new Node(this.pos);
         this.nodes[1] = new Node(new Vector(37.2, 1.1));
         this.nodes[0].setDistanceToFinish(this.nodes[1]);
@@ -70,8 +50,11 @@ export default class Player {
                 if (this.brain.directions.length > this.brain.step) {//if there are still directions left then set the velocity as the next PVector in the direcitons array
                     this.vel = this.brain.directions[this.brain.step];
                     this.brain.step++;
-                } else {//if at the end of 
+                    //.log(this.brain.step)
+                }
+                if(this.brain.directions.length === this.brain.step) {
                     this.dead = true;
+                    level.playerTouched(`outOfMoves`)
                 }
                 this.moveCount = 6;
             } else {
@@ -132,7 +115,7 @@ export default class Player {
             let newPosX = this.pos.plus(motionX);
             let newPosY = this.pos.plus(motionY);
 
-            console.log(newPosY);
+            //console.log(newPosY);
             let obstacleX = level.obstacleAt(newPosX, this.size);
             let obstacleY = level.obstacleAt(newPosY, this.size);
             let obstacleXY = level.obstacleAt(newPos, this.size);
@@ -163,6 +146,8 @@ export default class Player {
             this.deathAtStep = this.brain.step;
         }else if(colision===`reachedGoal`){
             this.reachedGoal=true;
+        } else if (this.brain.directions.length === this.brain.step) {
+            this.dead = true;
         }
     }
 
@@ -186,11 +171,12 @@ export default class Player {
     }
     
     gimmeBaby() {
-        let baby = new Player();
+        let baby = new Player(this.pos);
         baby.brain = this.brain.clone();
         baby.deathByDot = this.deathByDot;
         baby.deathAtStep = this.deathAtStep;
         baby.gen = this.gen;
+        console.log(baby)
         return baby;
     }
 
@@ -215,9 +201,9 @@ export default class Player {
             let otherActor = level.actorAt(this);
             if (otherActor)
                 level.playerTouched(otherActor.type, otherActor);
+            
 
-            if (level.status == `lost`) {
-            }
+
         }
     }
 

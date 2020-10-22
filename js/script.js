@@ -1,5 +1,6 @@
-import {arrowCodes, level} from './globalV/gameSetting.js';
+import { arrowCodes, level, populationSize, evolutionSpeed } from './globalV/gameSetting.js';
 import Vector from './classes/Vector.js';
+import Population from './classes/ai/Population.js';
 import CanvasDisplay from './classes/Canvas.js';
 import Enemy from './classes/Enemy.js';
 import Goal from './classes/Goal.js';
@@ -35,25 +36,27 @@ const trackKeys = codes => {
 };
 
 const runAnimation = frameFunc => {
-  let lastTime = null;
-  const frame = time => {
-    let stop = false;
-    if (lastTime != null) {
-      let timeStep = Math.min(time - lastTime, 100) / 1000;
-      stop = frameFunc(timeStep) === false;
-    }
-    lastTime = time;
-    if (!stop) {
-      requestAnimationFrame(frame);
-    }
-  };
-  requestAnimationFrame(frame);
+  for (let j = 0; j < evolutionSpeed; j++) {
+    let lastTime = null;
+    const frame = time => {
+      let stop = false;
+      if (lastTime != null) {
+        let timeStep = Math.min(time - lastTime, 100) / 1000;
+        stop = frameFunc(timeStep) === false;
+      }
+      lastTime = time;
+      if (!stop) {
+        requestAnimationFrame(frame);
+      }
+    };
+
+    requestAnimationFrame(frame);
+  }
 };
 
 const runLevel = (level, Display, andThen) => {
   let display = new Display(level, $canvas, ctx);
   runAnimation(function (step) {
-    //console.log(step);
     level.animate(step, arrows);
     display.drawFrame(step);
     if (level.isFinished()) {
@@ -67,57 +70,27 @@ const runLevel = (level, Display, andThen) => {
 };
 
 const runGame = (plans, Display) => {
-  const startLevel = n => {
-    runLevel(new Level(plans[n]), Display, status => {
-      if (status == `lost`) {
-        /*const $buttonretry = document.querySelector(`.retry`)
-        const buttonRetryHandler = e => {
-          e.preventDefault
-          startLevel(plans[n])
+  const levelOne = new Level(plans[0]);
+  const startLevel = () => {
+    levelOne.playerPopulation(plans[0]);
+
+      runLevel(levelOne, Display, status => {
+        if (status==`lost`) {
+          let display = new Display(levelOne, $canvas, ctx);
+          runAnimation(function (step) {
+            levelOne.animate(step, arrows);
+            display.drawFrame(step);
+          });
+          
+          levelOne.playerPopulation(plans[0]);
+        } else if (status == null) {
+          console.log(`You win!`);
+        }else{
         }
-        $buttonretry.addEventListener(`click`, buttonRetryHandler)*/
-        if (testPopulation.allPlayersDead()) {
-          //genetic algorithm
-          testPopulation.calculateFitness();
-          testPopulation.naturalSelection();
-          testPopulation.mutateDemBabies();
-          //reset dots
-          startLevel(0);
-
-          if (testPopulation.gen % increaseEvery == 0) {
-            testPopulation.increaseMoves();
-          }
-
-        } else {
-
-          // moveAndShowDots();
-          //update and show population
-
-          for (var j = 0; j < evolutionSpeed; j++) {
-            for (var i = 0; i < dots.length; i++) {
-              dots[i].move();
-            }
-            testPopulation.update();
-          }
-
-          for (var i = 0; i < dots.length; i++) {
-            dots[i].show();
-          }
-          testPopulation.show();
-        }
-      } else if (n < plans.length - 1) {
-        startLevel(n + 1);
-      } else {
-        const $title = document.querySelector(`.title`);
-        const $buttonretry = document.querySelector(`.retry`);
-        $buttonretry.textContent = ``;
-        $title.textContent=`You win`;
-      }
-    });
+      });
   };
-
-  startLevel(0);
+  //levelOne.playerPopulation(plans[0]);
+  startLevel();
 };
-
 
 init();

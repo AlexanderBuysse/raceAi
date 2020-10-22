@@ -38,7 +38,15 @@ export default class CanvasDisplay {
             }
             this.ctx.fillRect(actor.pos.x * scale, actor.pos.y * scale, actor.size.x * scale, actor.size.y * scale);
         });
+    } 
+
+    drawPlayers() {
+        this.level.population.players.forEach(actor => {
+                    this.ctx.fillStyle = 'rgb(64, 64, 64)';
+                    this.ctx.fillRect(actor.pos.x * scale, actor.pos.y * scale, actor.size.x * scale, actor.size.y * scale);
+        });
     }
+
     drawFrame() {
         this.ctx.fillStyle = `black`;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -46,6 +54,7 @@ export default class CanvasDisplay {
         this.scrollPlayerIntoView();
         this.drawBackground();
         this.drawActors();
+        this.drawPlayers();
         this.ctx.restore();
     }
     scrollPlayerIntoView() {
@@ -59,11 +68,11 @@ export default class CanvasDisplay {
         this.ctx.translate(-center.x - margin + width-200, -center.y - margin + height);
     }
     clear() {
-        console.log(this.canvas);
+        /*console.log(this.canvas);
         console.log(this.canvas.parentElement);
         const $title= document.querySelector(`.title`);
         const $buttonretry = document.querySelector(`.retry`);
         $buttonretry.textContent=`next`;
-        $title.textContent=`wasted`;
+        $title.textContent=`wasted`;*/
     }
 }

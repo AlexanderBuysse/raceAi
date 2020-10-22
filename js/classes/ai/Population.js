@@ -1,10 +1,12 @@
 import Vector from '../Vector.js';
+import Player from '../Player.js';
+import {populationSize} from '../../globalV/gameSetting.js';
 
 
 export default class Population{
 
-    constructor(size) {
-        this.players = [];
+    constructor(players) {
+        this.players = players;
         this.fitnessSum = 0.0;
         this.gen = 1;
         this.bestPlayer = 0;
@@ -12,29 +14,6 @@ export default class Population{
         this.genPlayers = [];
         this.bestFitness = 0;
         this.solutionFound = false;
-
-        for (let i = 0; i < size; i++) {
-            this.players[i] = new Player(new Vector(38, 19));
-        }
-    }
-
-    show() {
-        if (!showBest) {
-            for (let i = 1; i < this.players.length; i++) {
-                this.players[i].show();
-            }
-        }
-        this.players[0].show();
-    }
-
-    update() {
-        for (let i = 0; i < this.players.length; i++) {
-            if (this.players[i].brain.step > this.minStep) {//if the player has already taken more steps than the best player has taken to reach the goal
-                this.players[i].dead = true;//then it dead
-            } else {
-                this.players[i].update();
-            }
-        }
     }
 
     allPlayersDead() {
@@ -44,6 +23,20 @@ export default class Population{
             }
         }
         return true;
+    }
+
+    calculateFitness() {
+        for (let i = 0; i < this.players.length; i++) {
+            this.players[i].calculateFitness();
+        }
+    }
+
+    newPlayer(newPlayers) {
+        this.players = newPlayers;
+    }
+
+    allPLayers() {
+        return this.players;
     }
 
     naturalSelection() {
@@ -89,7 +82,7 @@ export default class Population{
 
         this.bestPlayer = maxIndex;
         console.log(maxIndex);
-        console.log(this.players[maxIndex].brain)
+        console.log(this.players[maxIndex])
 
         if (max > this.bestFitness) {
             this.bestFitness = max;
@@ -122,7 +115,7 @@ export default class Population{
     }
 
     selectParent() {
-        let rand = random(this.fitnessSum);
+        let rand = Math.floor(Math.random() * this.fitnessSum);
 
         let runningSum = 0;
         for (let i = 0; i < this.players.length; i++) {
@@ -131,8 +124,6 @@ export default class Population{
                 return this.players[i];
             }
         }
-        //should never get to this point
-
         return null;
     }
 }

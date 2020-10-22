@@ -5,7 +5,7 @@ export default class Brain {
     this.directions = [];
     this.step =0;
     this.randomize(size);
-
+    
   }
 
   randomize(size) {
@@ -47,8 +47,9 @@ getRandomDirection() {
   clone() {
     let clone = new Brain(this.directions.length);
     for (let i = 0; i < this.directions.length; i++) {
-      clone.directions[i] = this.directions[i].copy();
+      clone.directions[i] = this.directions[i]
     } 
+    console.log(clone.directions)
     return clone;
   }
 
@@ -58,11 +59,12 @@ getRandomDirection() {
   mutate(died, deathStep) {
     //chance that any vector in directions gets changed
     for (let i =0; i< this.directions.length; i++) {
-      let rand = random(1);
+      let rand = Math.floor(Math.random() *1);
       if (died && i > deathStep - 10) {
-        rand = random(0.2);
+        rand = Math.floor(Math.random() *0.2);
       }
 
+      const mutationRate=0.1;
       if (rand < mutationRate) {
         //set this direction as a random direction
         this.directions[i] = this.getRandomDirection();
@@ -73,6 +75,7 @@ getRandomDirection() {
   //---------------------------------------------------------------------------------------------------------------------------------------------------------
   //increases the number of elements in directions by 5
  increaseMoves() {
+   let increaseMovesBy=1;
    for(let i = 0 ; i< increaseMovesBy ;i++){
      this.directions.push(this.getRandomDirection());
    }
